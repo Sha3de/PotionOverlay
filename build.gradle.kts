@@ -39,6 +39,12 @@ repositories {
     // You should only use this when depending on other mods because
     // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
     // See https://docs.gradle.org/current/userguide/declaring_repositories.html
+    maven("https://maven.isxander.dev/releases") {
+        name = "Xander Maven"
+    }
+    maven("https://maven.terraformersmc.com/") {
+        name = "Terraformers"
+    }
 }
 
 dependencies {
@@ -46,6 +52,9 @@ dependencies {
     mappings("net.fabricmc:yarn:${project.property("yarn_mappings")}:v2")
     modImplementation("net.fabricmc:fabric-loader:${project.property("loader_version")}")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${project.property("fabric_version")}")
+
+    modImplementation("dev.isxander:yet-another-config-lib:${project.property("yacl_version")}")
+    modImplementation("com.terraformersmc:modmenu:${property("modmenu_version")}")
 
     modImplementation("net_fabricmc_yarn_1_21_1_21_build_9_v2.net.fabricmc.fabric-api:fabric-key-binding-api-v1-client:${project.property("key_binding_version")}")
     modImplementation("net_fabricmc_yarn_1_21_1_21_build_9_v2.net.fabricmc.fabric-api:fabric-lifecycle-events-v1-client:${project.property("lifecycle_events_version")}")
