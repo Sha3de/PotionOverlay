@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "potionoverlay",
+  "version": "${version}",
+  "name": "PotionTimer",
+  "description": "A mod which shows the remaining time of potion effects on the screen.",
+  "authors": ["Sha3de"],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/potionoverlay/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "net.shade.potionoverlay.client.MainClient"
+    ],
+    "main": [
+      "net.shade.potionoverlay.Main"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-language-kotlin": ">=${kotlin_loader_version}",
+    "fabric": "*",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
