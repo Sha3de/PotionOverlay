@@ -7,6 +7,7 @@ import dev.isxander.yacl3.config.v2.api.serializer.GsonConfigSerializerBuilder
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.util.Identifier
 import net.shade.potionoverlay.Main
+import java.awt.Color
 
 
 class PotionOverlayConfig {
@@ -35,5 +36,7 @@ class PotionOverlayConfig {
 
         @SerialEntry
         var timeWhenStartBlinking: Int = 10
+        @SerialEntry
+        var textColor: Color = Color.WHITE
     }
 }

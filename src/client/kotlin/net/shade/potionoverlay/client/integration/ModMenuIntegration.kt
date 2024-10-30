@@ -4,11 +4,13 @@ import com.terraformersmc.modmenu.api.ConfigScreenFactory
 import com.terraformersmc.modmenu.api.ModMenuApi
 import dev.isxander.yacl3.api.*
 import dev.isxander.yacl3.api.controller.BooleanControllerBuilder
+import dev.isxander.yacl3.api.controller.ColorControllerBuilder
 import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder
 import net.minecraft.client.MinecraftClient
 import net.minecraft.text.Text
 import net.shade.potionoverlay.client.MainClient
 import net.shade.potionoverlay.client.util.PotionOverlayConfig
+import java.awt.Color
 
 
 class ModMenuIntegration : ModMenuApi {
@@ -25,12 +27,12 @@ class ModMenuIntegration : ModMenuApi {
                             .name(Text.of("X cordination"))
                             .description(OptionDescription.of(Text.of("The X position of the widget")))
                             .binding(
-                                0,
+                                PotionOverlayConfig.widgetX,
                                 { PotionOverlayConfig.widgetX },
                                 { newVal -> PotionOverlayConfig.widgetX = newVal }
                             )
                             .controller { option: Option<Int> ->
-                                IntegerSliderControllerBuilder.create(option).range(1,MinecraftClient.getInstance().window.scaledWidth - MainClient.widgetScreen.widgetWidth).step(1)
+                                IntegerSliderControllerBuilder.create(option).range(0,MinecraftClient.getInstance().window.scaledWidth - MainClient.widgetScreen.widgetWidth).step(1)
                             }
                             .build()
                         )
@@ -38,12 +40,12 @@ class ModMenuIntegration : ModMenuApi {
                             .name(Text.of("Y cordination"))
                             .description(OptionDescription.of(Text.of("The Y position of the widget")))
                             .binding(
-                                0,
+                                PotionOverlayConfig.widgetY,
                                 { PotionOverlayConfig.widgetY },
                                 { newVal -> PotionOverlayConfig.widgetY = newVal }
                             )
                             .controller { option: Option<Int> ->
-                                IntegerSliderControllerBuilder.create(option).range(1,MinecraftClient.getInstance().window.scaledHeight - MainClient.widgetScreen.widgetHeight).step(1)
+                                IntegerSliderControllerBuilder.create(option).range(0,MinecraftClient.getInstance().window.scaledHeight - MainClient.widgetScreen.widgetHeight).step(1)
                             }
                             .build()
                         )
@@ -51,7 +53,7 @@ class ModMenuIntegration : ModMenuApi {
                             .name(Text.of("Render Shadow"))
                             .description(OptionDescription.of(Text.of("Render the shadow of the text")))
                             .binding(
-                                false,
+                                PotionOverlayConfig.renderShadow,
                                 { PotionOverlayConfig.renderShadow },
                                 { newVal -> PotionOverlayConfig.renderShadow = newVal }
                             )
@@ -60,11 +62,22 @@ class ModMenuIntegration : ModMenuApi {
                             }
                             .build()
                         )
+                        .option(Option.createBuilder<Color>()
+                            .name(Text.of("Render Shadow"))
+                            .description(OptionDescription.of(Text.of("Render the shadow of the text")))
+                            .binding(
+                                PotionOverlayConfig.textColor,
+                                { PotionOverlayConfig.textColor },
+                                { newVal -> PotionOverlayConfig.textColor = newVal }
+                            )
+                            .controller(ColorControllerBuilder::create)
+                            .build()
+                        )
                         .option(Option.createBuilder<Boolean>()
                             .name(Text.of("Render Blinking effect"))
                             .description(OptionDescription.of(Text.of("If the text should blink when under a certain time")))
                             .binding(
-                                false,
+                                PotionOverlayConfig.blinkWhenUnderATime,
                                 { PotionOverlayConfig.blinkWhenUnderATime },
                                 { newVal -> PotionOverlayConfig.blinkWhenUnderATime = newVal }
                             )

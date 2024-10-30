@@ -62,7 +62,7 @@ class CustomHudRenderer {
                     text.append(" ").append(getRomanticNumbers(effect.amplifier + 1)),
                     PotionOverlayConfig.widgetX + 20,
                     ((PotionOverlayConfig.widgetY + MainClient.widgetScreen.widgetHeight) - 16) - (2 + (index * 20)),
-                    0xFFFFFF,
+                    PotionOverlayConfig.textColor.rgb,
                     PotionOverlayConfig.renderShadow
                 )
 
