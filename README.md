@@ -15,9 +15,11 @@ A Fabric Mod which displays the length of a potion and the type and amplifier
 ## Features
 ### Shadow
 - The shadow can be toggled on and off
+
 ![](https://raw.githubusercontent.com/Sha3de/PotionOverlay/refs/heads/dev/1.21/screenshots/shadow.png)
 ### Blinking
 - The blinking can be toggled on and off and you can configure on how many seconds the blinking should start
 ### Color
 - The color of the text can be changed
+
 ![](https://raw.githubusercontent.com/Sha3de/PotionOverlay/refs/heads/dev/1.21/screenshots/color.png)
