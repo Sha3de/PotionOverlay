@@ -5,7 +5,7 @@
 A Fabric Mod which displays the length of a potion and the type and amplifier
 ## How to use
 ### Keybind
-- ´Right Shift´ is the default keybind to open the screen where you can drag the potion timer around where you like it
+- `Right Shift` is the default keybind to open the screen where you can drag the potion timer around where you like it
 - But the default key can be changed in the controls menu
 ![](https://raw.githubusercontent.com/Sha3de/PotionOverlay/refs/heads/dev/1.21/screenshots/widget_screen.png)
 ### Config

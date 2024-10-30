@@ -6,7 +6,8 @@
   "description": "A mod which shows the remaining time of potion effects on the screen.",
   "authors": ["Sha3de"],
   "contact": {
-    "sources": "https://github.com/Sha3de/PotionOverlay"
+    "sources": "https://github.com/Sha3de/PotionOverlay",
+    "issues": "https://github.com/Sha3de/PotionOverlay/issues"
   },
   "license": "MIT",
   "icon": "assets/potionoverlay/icon.png",
@@ -34,7 +35,7 @@
     "fabric": "*",
     "fabric-api": "*",
     "minecraft": "${minecraft_version}",
-    "yet_another_config_lib_v3": ">=3.6.1+1.21-fabric"
+    "yet_another_config_lib_v3": ">=${yacl_version}"
   },
   "suggests": {
     "modmenu": "*"
