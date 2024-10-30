@@ -1,14 +1,31 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.util.*
 
 plugins {
     kotlin("jvm") version "2.0.21"
-    id("fabric-loom") version "1.7.1"
+    id("fabric-loom") version "1.8.+"
     id("maven-publish")
 }
+val versionSuffix: String = project.findProperty("version") as String? ?: "1.21.1"
+
+val versionSpecificProperties = file("versions/$versionSuffix/gradle.properties")
+
+if (versionSpecificProperties.exists()) {
+    val props = Properties()
+    versionSpecificProperties.inputStream().use { props.load(it) }
+    props.forEach { (key, value) ->
+        project.extensions.extraProperties[key.toString()] = value
+    }
+} else {
+    throw GradleException("Properties file for version $versionSuffix not found.")
+}
+
+val mcVersion = property("mcVersion")!!.toString()
+val mcDep = property("mcDep").toString()
 
 version = project.property("mod_version") as String
-group = project.property("maven_group") as String
+group = "net.shade"
 
 base {
     archivesName.set(project.property("archives_base_name") as String)
@@ -17,9 +34,6 @@ base {
 val targetJavaVersion = 21
 java {
     toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
-    // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-    // if it is present.
-    // If you remove this line, sources will not be generated.
     withSourcesJar()
 }
 
@@ -35,10 +49,6 @@ loom {
 }
 
 repositories {
-    // Add repositories to retrieve artifacts from in here.
-    // You should only use this when depending on other mods because
-    // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
-    // See https://docs.gradle.org/current/userguide/declaring_repositories.html
     maven("https://maven.isxander.dev/releases") {
         name = "Xander Maven"
     }
@@ -54,15 +64,15 @@ repositories {
         filter { includeGroup("curse.maven") }
     }
 }
-val mcVersion = property("minecraft_version")!!.toString()
 dependencies {
 
     minecraft("com.mojang:minecraft:$mcVersion")
     mappings("net.fabricmc:yarn:${project.property("yarn_mappings")}:v2")
-    modImplementation("com.terraformersmc:modmenu:${property("modmenu_version")}")
-    modImplementation("net.fabricmc:fabric-loader:${property("loader_version")}")
 
+    modImplementation("net.fabricmc:fabric-loader:${property("loaderVersion")}")
     val fapiVersion = property("fabric_version").toString()
+    modRuntimeOnly("net.fabricmc.fabric-api:fabric-api:$fapiVersion") // so you can do `depends: fabric-api` in FMJ
+
     listOf(
         "fabric-lifecycle-events-v1",
         "fabric-key-binding-api-v1",
@@ -70,34 +80,34 @@ dependencies {
     ).forEach {
         modImplementation(fabricApi.module(it, fapiVersion))
     }
-    modRuntimeOnly("net.fabricmc.fabric-api:fabric-api:$fapiVersion") // so you can do `depends: fabric-api` in FMJ
+
     modImplementation("net.fabricmc:fabric-language-kotlin:${property("kotlin_loader_version")}")
+    optionalProp("modmenu_version") {
+        modImplementation("com.terraformersmc:modmenu:$it")
+    }
 
     modApi("dev.isxander:yet-another-config-lib:${property("yacl_version")}") {
         exclude(group = "net.fabricmc.fabric-api", module = "fabric-api")
     }
 }
-tasks.processResources {
-    inputs.property("version", project.version)
-    inputs.property("minecraft_version", project.property("minecraft_version"))
-    inputs.property("loader_version", project.property("loader_version"))
-    filteringCharset = "UTF-8"
 
-    filesMatching("fabric.mod.json") {
-        expand(
-            "version" to project.version,
-            "minecraft_version" to project.property("minecraft_version"),
-            "loader_version" to project.property("loader_version"),
-            "kotlin_loader_version" to project.property("kotlin_loader_version")
-        )
-    }
-}
-
+//tasks.processResources {
+//    inputs.property("version", project.version)
+//    inputs.property("minecraft_version", project.property("minecraft_version"))
+//    inputs.property("loader_version", project.property("loader_version"))
+//    filteringCharset = "UTF-8"
+//
+//    filesMatching("fabric.mod.json") {
+//        expand(
+//            "version" to project.version,
+//            "minecraft_version" to project.property("minecraft_version"),
+//            "loader_version" to project.property("loader_version"),
+//            "kotlin_loader_version" to project.property("kotlin_loader_version")
+//        )
+//    }
+//}
+//
 tasks.withType<JavaCompile>().configureEach {
-    // ensure that the encoding is set to UTF-8, no matter what the system default is
-    // this fixes some edge cases with special characters not displaying correctly
-    // see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
-    // If Javadoc is generated, this must be specified in that task too.
     options.encoding = "UTF-8"
     options.release.set(targetJavaVersion)
 }
@@ -106,13 +116,84 @@ tasks.withType<KotlinCompile>().configureEach {
     compilerOptions.jvmTarget.set(JvmTarget.fromTarget(targetJavaVersion.toString()))
 }
 
-tasks.jar {
-    from("LICENSE") {
-        rename { "${it}_${project.base.archivesName}" }
-    }
-}
+//tasks.jar {
+//    from("LICENSE") {
+//        rename { "${it}_${project.base.archivesName}" }
+//    }
+//}
 
-// configure the maven publication
+tasks {
+    processResources {
+        val modId: String by project
+        val modName: String by project
+        val modDescription: String by project
+        val githubProject: String by project
+        val loaderVersion: String by project.extra
+        val mcDep : String by project.extra
+        val kotlin_loader_version: String by project.extra
+        val yacl_version: String by project.extra
+        println("Mod ID: $modId")
+        println("Mod Name: $modName")
+        println("Mod Description: $modDescription")
+        println("Github Project: $githubProject")
+        println("Loader Version: $loaderVersion")
+        println("MC Version: $mcDep")
+        println("Kotlin Loader Version: $kotlin_loader_version")
+        println("YACL Version: $yacl_version")
+
+        val props = mapOf(
+            "id" to modId,
+            "group" to project.group,
+            "name" to modName,
+            "description" to modDescription,
+            "version" to project.version,
+            "github" to githubProject,
+            "mc" to mcDep,
+            "loader_version" to loaderVersion,
+            "kotlin_loader_version" to kotlin_loader_version,
+            "minecraft_version" to mcDep,
+            "yacl_version" to yacl_version
+        )
+
+        props.forEach(inputs::property)
+
+        filesMatching("fabric.mod.json") {
+            expand(props)
+        }
+
+//        register("releaseMod") {
+//            group = "mod"
+//
+//            dependsOn("publish")
+//        }
+    }
+//    register("releaseMod") {
+//        group = "mod"
+//
+//        dependsOn("publish")
+//    }
+}
+//publishMods {
+//    displayName.set("Zoomify $versionWithoutMC for MC $mcVersion")
+//    file.set(tasks.remapJar.get().archiveFile)
+//    changelog.set(
+//        rootProject.file("changelogs/${versionWithoutMC}.md")
+//            .takeIf { it.exists() }
+//            ?.readText()
+//            ?: "No changelog provided."
+//    )
+//    type.set(when {
+//        isAlpha -> ALPHA
+//        isBeta -> BETA
+//        else -> STABLE
+//    })
+//    modLoaders.add("fabric")
+//
+//    fun versionList(prop: String) = findProperty(prop)?.toString()
+//        ?.split(',')
+//        ?.map { it.trim() }
+//        ?: emptyList()
+//}
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {
@@ -129,3 +210,7 @@ publishing {
         // retrieving dependencies.
     }
 }
+fun <T> optionalProp(property: String, block: (String) -> T?) {
+    findProperty(property)?.toString()?.takeUnless { it.isBlank() }?.let(block)
+}
+
