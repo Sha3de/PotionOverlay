@@ -63,8 +63,8 @@ class ModMenuIntegration : ModMenuApi {
                             .build()
                         )
                         .option(Option.createBuilder<Color>()
-                            .name(Text.of("Render Shadow"))
-                            .description(OptionDescription.of(Text.of("Render the shadow of the text")))
+                            .name(Text.of("Color of the text"))
+                            .description(OptionDescription.of(Text.of("Change the color of the text")))
                             .binding(
                                 PotionOverlayConfig.textColor,
                                 { PotionOverlayConfig.textColor },
