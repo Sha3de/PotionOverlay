@@ -2,10 +2,22 @@
 ![Enviroment](https://img.shields.io/badge/Enviroment-Client-purple)
 
 ### PotionOverlay
-This is a mod which shows you how long a potion lasts
+A Fabric Mod which displays the length of a potion and the type and amplifier
 ## How to use
 ### Keybind
 - ´Right Shift´ is the default keybind to open the screen where you can drag the potion timer around where you like it
 - But the default key can be changed in the controls menu
+![](https://raw.githubusercontent.com/Sha3de/PotionOverlay/refs/heads/dev/1.21/screenshots/widget_screen.png)
 ### Config
-- The config can be accessed by using modmenu
+- The config can be accessed by using [Mod Menu](https://modrinth.com/mod/modmenu)
+
+![](https://raw.githubusercontent.com/Sha3de/PotionOverlay/refs/heads/dev/1.21/screenshots/config_menu.png)
+## Features
+### Shadow
+- The shadow can be toggled on and off
+![](https://raw.githubusercontent.com/Sha3de/PotionOverlay/refs/heads/dev/1.21/screenshots/shadow.png)
+### Blinking
+- The blinking can be toggled on and off and you can configure on how many seconds the blinking should start
+### Color
+- The color of the text can be changed
+![](https://raw.githubusercontent.com/Sha3de/PotionOverlay/refs/heads/dev/1.21/screenshots/color.png)
