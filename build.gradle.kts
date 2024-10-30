@@ -45,22 +45,38 @@ repositories {
     maven("https://maven.terraformersmc.com/") {
         name = "Terraformers"
     }
+    exclusiveContent {
+        forRepository { maven("https://api.modrinth.com/maven") }
+        filter { includeGroup("maven.modrinth") }
+    }
+    exclusiveContent {
+        forRepository { maven("https://cursemaven.com") }
+        filter { includeGroup("curse.maven") }
+    }
 }
-
+val mcVersion = property("minecraft_version")!!.toString()
 dependencies {
-    minecraft("com.mojang:minecraft:${project.property("minecraft_version")}")
+
+    minecraft("com.mojang:minecraft:$mcVersion")
     mappings("net.fabricmc:yarn:${project.property("yarn_mappings")}:v2")
-    modImplementation("net.fabricmc:fabric-loader:${project.property("loader_version")}")
-    modImplementation("net.fabricmc.fabric-api:fabric-api:${project.property("fabric_version")}")
-
-    modImplementation("dev.isxander:yet-another-config-lib:${project.property("yacl_version")}")
     modImplementation("com.terraformersmc:modmenu:${property("modmenu_version")}")
+    modImplementation("net.fabricmc:fabric-loader:${property("loader_version")}")
 
-    modImplementation("net_fabricmc_yarn_1_21_1_21_build_9_v2.net.fabricmc.fabric-api:fabric-key-binding-api-v1-client:${project.property("key_binding_version")}")
-    modImplementation("net_fabricmc_yarn_1_21_1_21_build_9_v2.net.fabricmc.fabric-api:fabric-lifecycle-events-v1-client:${project.property("lifecycle_events_version")}")
-    modImplementation("net.minecraft:minecraft-clientOnly-c2b31d572c:1.21-net.fabricmc.yarn.1_21.1.21+build.9-v2")
+    val fapiVersion = property("fabric_version").toString()
+    listOf(
+        "fabric-lifecycle-events-v1",
+        "fabric-key-binding-api-v1",
+        "fabric-rendering-v1"
+    ).forEach {
+        modImplementation(fabricApi.module(it, fapiVersion))
+    }
+    modRuntimeOnly("net.fabricmc.fabric-api:fabric-api:$fapiVersion") // so you can do `depends: fabric-api` in FMJ
+    modImplementation("net.fabricmc:fabric-language-kotlin:${property("kotlin_loader_version")}")
+
+    modApi("dev.isxander:yet-another-config-lib:${property("yacl_version")}") {
+        exclude(group = "net.fabricmc.fabric-api", module = "fabric-api")
+    }
 }
-
 tasks.processResources {
     inputs.property("version", project.version)
     inputs.property("minecraft_version", project.property("minecraft_version"))

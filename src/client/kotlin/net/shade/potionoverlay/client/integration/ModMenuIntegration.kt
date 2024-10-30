@@ -74,7 +74,7 @@ class ModMenuIntegration : ModMenuApi {
                             .build()
                         )
                         .option(Option.createBuilder<Int>()
-                            .name(Text.of("The time to start blinking"))
+                            .name(Text.of("How many seconds left to start blinking"))
                             .description(OptionDescription.of(Text.of("On how many seconds left should the text start blinking")))
                             .binding(
                                 0,

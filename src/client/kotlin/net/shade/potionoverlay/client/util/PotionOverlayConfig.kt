@@ -16,7 +16,7 @@ class PotionOverlayConfig {
             .serializer { config: ConfigClassHandler<PotionOverlayConfig>? ->
                 GsonConfigSerializerBuilder.create<PotionOverlayConfig>(config)
                     .setPath(FabricLoader.getInstance().getConfigDir().resolve("${Main.MOD_ID}.json5"))
-                    .appendGsonBuilder(GsonBuilder::setPrettyPrinting) // not needed, pretty print by default
+                    .appendGsonBuilder(GsonBuilder::setPrettyPrinting)
                     .setJson5(true)
                     .build()
             }
@@ -36,7 +36,4 @@ class PotionOverlayConfig {
         @SerialEntry
         var timeWhenStartBlinking: Int = 10
     }
-
-
-
 }
