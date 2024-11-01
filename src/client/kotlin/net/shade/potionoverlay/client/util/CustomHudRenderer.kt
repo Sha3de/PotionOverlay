@@ -3,7 +3,6 @@ package net.shade.potionoverlay.client.util
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.DrawContext
-import net.minecraft.client.render.RenderTickCounter
 import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
@@ -12,7 +11,7 @@ import net.shade.potionoverlay.client.MainClient
 class CustomHudRenderer {
     private var tickTimer: Int = 0
     fun render() {
-        HudRenderCallback.EVENT.register { drawContext: DrawContext, _: RenderTickCounter ->
+        HudRenderCallback.EVENT.register { drawContext: DrawContext, _: Float ->
             tickTimer++
             val player = MinecraftClient.getInstance().player
             player?.statusEffects?.forEachIndexed { index, effect ->
@@ -20,7 +19,7 @@ class CustomHudRenderer {
                 if (effect.effectType.key.isEmpty) return@forEachIndexed
                 val effectTypeKey = effect.effectType.key.get()
                 val img =
-                    Identifier.ofVanilla("textures/${effectTypeKey.registry.path}/${effectTypeKey.value.path}.png")
+                    Identifier.of("minecraft","textures/${effectTypeKey.registry.path}/${effectTypeKey.value.path}.png")
                 val text = Text.translatable(effect.translationKey)
                 if (effect.duration == StatusEffectInstance.INFINITE) {
                     renderTimer(
