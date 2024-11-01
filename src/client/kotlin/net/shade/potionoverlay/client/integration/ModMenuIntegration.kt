@@ -100,6 +100,19 @@ class ModMenuIntegration : ModMenuApi {
                             .available(PotionOverlayConfig.blinkWhenUnderATime)
                             .build()
                         )
+                        .option(Option.createBuilder<Boolean>()
+                            .name(Text.of("Show the potion effect"))
+                            .description(OptionDescription.of(Text.of("Show the potion effect that is displayed in the top right corner")))
+                            .binding(
+                                PotionOverlayConfig.showPotionEffect,
+                                { PotionOverlayConfig.showPotionEffect },
+                                { newVal -> PotionOverlayConfig.showPotionEffect = newVal }
+                            )
+                            .controller { option: Option<Boolean> ->
+                                BooleanControllerBuilder.create(option).yesNoFormatter()
+                            }
+                            .build()
+                        )
                         .build()
                     )
                     .build()

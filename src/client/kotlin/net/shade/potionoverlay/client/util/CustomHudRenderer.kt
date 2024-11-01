@@ -28,8 +28,8 @@ class CustomHudRenderer {
                         Text.of("∞"),
                         index
                     )
-                } else if (PotionOverlayConfig.blinkWhenUnderATime && (effect.duration <= 20 * PotionOverlayConfig.timeWhenStartBlinking)) {
-                        if ((tickTimer % 80) > 40) {
+                } else if (PotionOverlayConfig.blinkWhenUnderATime && (effect.duration <= (20 * PotionOverlayConfig.timeWhenStartBlinking))) {
+                        if ((tickTimer % 100) > 50 ) {
                             renderTimer(
                                 drawContext,
                                 Text.of(

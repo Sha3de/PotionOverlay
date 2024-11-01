@@ -29,6 +29,9 @@
       "net.shade.potionoverlay.client.integration.ModMenuIntegration"
     ]
   },
+  "mixins": [
+    "potionoverlay.client.mixin.json"
+  ],
   "depends": {
     "fabricloader": ">=${loader_version}",
     "fabric-language-kotlin": ">=${kotlin_loader_version}",

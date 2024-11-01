@@ -94,6 +94,7 @@ class PotionTimerWidgetScreen : Screen(Text.of("Potion Timer Widget")) {
             16,
             16
         )
+
         context.fill(
             MinecraftClient.getInstance().window.scaledWidth - 20,
             4,
@@ -106,7 +107,8 @@ class PotionTimerWidgetScreen : Screen(Text.of("Potion Timer Widget")) {
     override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int): Boolean {
         if (button == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
             if (mouseX >= MinecraftClient.getInstance().window.scaledWidth - 20 && mouseX <= MinecraftClient.getInstance().window.scaledWidth - 4 &&
-                mouseY >= 4 && mouseY <= 20) {
+                mouseY >= 4 && mouseY <= 20
+            ) {
                 PotionOverlayConfig.widgetX = 0
                 PotionOverlayConfig.widgetY = 0
                 saveWidgetPosition()

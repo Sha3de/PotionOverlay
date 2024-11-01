@@ -9,7 +9,9 @@ plugins {
 }
 val versionSuffix: String = project.findProperty("version") as String? ?: "1.21.1"
 
-val versionSpecificProperties = file("versions/$versionSuffix/gradle.properties")
+//val versionSpecificProperties = file("versions/$versionSuffix/gradle.properties")
+val versionSpecificProperties = file("versions/1.21.1/gradle.properties")
+
 
 if (versionSpecificProperties.exists()) {
     val props = Properties()

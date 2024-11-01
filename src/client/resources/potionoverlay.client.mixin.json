@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "net.shade.potionoverlay.client.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "InGameHudRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
