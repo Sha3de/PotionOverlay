@@ -16,12 +16,8 @@ class PotionTimerWidgetScreen : Screen(Text.of("Potion Timer Widget")) {
     private var dragging = false
     private var dragOffsetX = 0
     private var dragOffsetY = 0
-
     val widgetWidth = 120
-        get() = field
-
     val widgetHeight = 40
-        get() = field
 
     init {
         loadWidgetPosition()
@@ -35,7 +31,7 @@ class PotionTimerWidgetScreen : Screen(Text.of("Potion Timer Widget")) {
         super.render(context, mouseX, mouseY, delta)
         val img1 = Identifier.of("minecraft","textures/mob_effect/absorption.png")
         val img2 = Identifier.of("minecraft","textures/mob_effect/blindness.png")
-        val reset_Button = Identifier.of(Main.MOD_ID, "textures/gui/reset_button.png")
+        val resetButton = Identifier.of(Main.MOD_ID, "textures/gui/reset_button.png")
 
         if (context == null) return
         context.fill(
@@ -84,7 +80,7 @@ class PotionTimerWidgetScreen : Screen(Text.of("Potion Timer Widget")) {
             16
         )
         context.drawTexture(
-            reset_Button,
+            resetButton,
             MinecraftClient.getInstance().window.scaledWidth - 20,
             4,
             0f,

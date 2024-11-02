@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(InGameHud.class)
 public class InGameHudRendererMixin {
     @Inject(method = "renderStatusEffectOverlay", at = @At("HEAD"), cancellable = true)
-    private void onRenderStatusEffectOverlay(DrawContext context, float tickDelta, CallbackInfo ci) {
+    private void onRenderStatusEffectOverlay(DrawContext context, CallbackInfo ci) {
         if(!PotionOverlayConfig.Companion.getShowPotionEffect())
             ci.cancel();
     }

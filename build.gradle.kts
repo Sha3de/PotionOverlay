@@ -10,7 +10,7 @@ plugins {
 val versionSuffix: String = project.findProperty("version") as String? ?: "1.21.1"
 
 //val versionSpecificProperties = file("versions/$versionSuffix/gradle.properties")
-val versionSpecificProperties = file("versions/1.20.6/gradle.properties")
+val versionSpecificProperties = file("versions/1.20.4/gradle.properties")
 
 
 if (versionSpecificProperties.exists()) {
@@ -134,15 +134,6 @@ tasks {
         val mcDep : String by project.extra
         val kotlin_loader_version: String by project.extra
         val yacl_version: String by project.extra
-        println("Mod ID: $modId")
-        println("Mod Name: $modName")
-        println("Mod Description: $modDescription")
-        println("Github Project: $githubProject")
-        println("Loader Version: $loaderVersion")
-        println("MC Version: $mcDep")
-        println("Kotlin Loader Version: $kotlin_loader_version")
-        println("YACL Version: $yacl_version")
-
         val props = mapOf(
             "id" to modId,
             "group" to project.group,

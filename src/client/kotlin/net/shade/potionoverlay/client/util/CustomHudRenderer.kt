@@ -15,11 +15,9 @@ class CustomHudRenderer {
             tickTimer++
             val player = MinecraftClient.getInstance().player
             player?.statusEffects?.forEachIndexed { index, effect ->
-
-                if (effect.effectType.key.isEmpty) return@forEachIndexed
-                val effectTypeKey = effect.effectType.key.get()
+                val effectTypeKey = effect.translationKey
                 val img =
-                    Identifier.of("minecraft","textures/${effectTypeKey.registry.path}/${effectTypeKey.value.path}.png")
+                    Identifier.of("minecraft","textures/mob_effect/${effectTypeKey.split(".").last()}.png")
                 val text = Text.translatable(effect.translationKey)
                 if (effect.duration == StatusEffectInstance.INFINITE) {
                     renderTimer(
@@ -79,7 +77,7 @@ class CustomHudRenderer {
         drawContext.drawText(
             MinecraftClient.getInstance().textRenderer,
             text,
-            PotionOverlayConfig.widgetX  + 20,
+            PotionOverlayConfig.widgetX + 20,
             ((PotionOverlayConfig.widgetY + MainClient.widgetScreen.widgetHeight) - 16) - (-6 + (index * 20)),
             0xFFFFFF,
             PotionOverlayConfig.renderShadow
