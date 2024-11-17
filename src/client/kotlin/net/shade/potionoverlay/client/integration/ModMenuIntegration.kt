@@ -100,6 +100,18 @@ class ModMenuIntegration : ModMenuApi {
                             .available(PotionOverlayConfig.blinkWhenUnderATime)
                             .build()
                         )
+                        .option(Option.createBuilder<Color>()
+                            .name(Text.of("Color of the blinking time"))
+                            .description(OptionDescription.of(Text.of("Which color the timer should be when blinking")))
+                            .binding(
+                                PotionOverlayConfig.blinkColor,
+                                { PotionOverlayConfig.blinkColor },
+                                { newVal -> PotionOverlayConfig.blinkColor = newVal }
+                            )
+                            .controller(ColorControllerBuilder::create)
+                            .available(PotionOverlayConfig.blinkWhenUnderATime)
+                            .build()
+                        )
                         .option(Option.createBuilder<Boolean>()
                             .name(Text.of("Show the potion effect"))
                             .description(OptionDescription.of(Text.of("Show the potion effect that is displayed in the top right corner")))

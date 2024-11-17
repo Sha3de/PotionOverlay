@@ -9,11 +9,12 @@ import net.shade.potionoverlay.client.util.KeyRegisterHandler
 
 @Environment(EnvType.CLIENT)
 class MainClient : ClientModInitializer {
-    companion object{
+    companion object {
         var keyRegisterHandler: KeyRegisterHandler = KeyRegisterHandler()
         var customHudRenderer: CustomHudRenderer = CustomHudRenderer()
         var widgetScreen: PotionTimerWidgetScreen = PotionTimerWidgetScreen()
     }
+
     override fun onInitializeClient() {
         keyRegisterHandler.register()
         customHudRenderer.render()

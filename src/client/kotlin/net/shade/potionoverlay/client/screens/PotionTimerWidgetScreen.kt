@@ -33,8 +33,8 @@ class PotionTimerWidgetScreen : Screen(Text.of("Potion Timer Widget")) {
         if ((PotionOverlayConfig.widgetY - (widgetHeight * 1.5)) > MinecraftClient.getInstance().window.scaledHeight) PotionOverlayConfig.widgetY =
             MinecraftClient.getInstance().window.scaledHeight - widgetHeight
         super.render(context, mouseX, mouseY, delta)
-        val img1 = Identifier.ofVanilla("textures/mob_effect/absorption.png")
-        val img2 = Identifier.ofVanilla("textures/mob_effect/blindness.png")
+        val img1 = Identifier.of("minecraft","textures/mob_effect/absorption.png")
+        val img2 = Identifier.of("minecraft","textures/mob_effect/blindness.png")
         val reset_Button = Identifier.of(Main.MOD_ID, "textures/gui/reset_button.png")
 
         if (context == null) return
