@@ -8,12 +8,11 @@ import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
 import net.shade.potionoverlay.client.MainClient
-
+var ticktimer : Int = 0
 class CustomHudRenderer {
-    private var tickTimer: Int = 0
     fun render() {
         HudRenderCallback.EVENT.register { drawContext: DrawContext, _: RenderTickCounter ->
-            tickTimer++
+            ticktimer++
             val player = MinecraftClient.getInstance().player
             player?.statusEffects?.forEachIndexed { index, effect ->
 
@@ -26,10 +25,11 @@ class CustomHudRenderer {
                     renderTimer(
                         drawContext,
                         Text.of("∞"),
-                        index
+                        index,
+                        false
                     )
                 } else if (PotionOverlayConfig.blinkWhenUnderATime && (effect.duration <= (20 * PotionOverlayConfig.timeWhenStartBlinking))) {
-                        if ((tickTimer % 100) > 50 ) {
+                        if (ticktimer % 80 > 40) {
                             renderTimer(
                                 drawContext,
                                 Text.of(
@@ -40,7 +40,8 @@ class CustomHudRenderer {
                                         effect.duration / 20 % 60
                                     )
                                 ),
-                                index
+                                index,
+                                true
                             )
                     }
                 } else {
@@ -54,37 +55,73 @@ class CustomHudRenderer {
                                 effect.duration / 20 % 60
                             )
                         ),
-                        index
+                        index,
+                        false
                     )
                 }
-                drawContext.drawText(
-                    MinecraftClient.getInstance().textRenderer,
-                    text.append(" ").append(getRomanticNumbers(effect.amplifier + 1)),
-                    PotionOverlayConfig.widgetX + 20,
-                    ((PotionOverlayConfig.widgetY + MainClient.widgetScreen.widgetHeight) - 16) - (2 + (index * 20)),
-                    PotionOverlayConfig.textColor.rgb,
-                    PotionOverlayConfig.renderShadow
-                )
+                if(PotionOverlayConfig.widgetY >= (MinecraftClient.getInstance().window.scaledHeight / 2) ) {
+                    drawContext.drawText(
+                        MinecraftClient.getInstance().textRenderer,
+                        text.append(" ").append(getRomanticNumbers(effect.amplifier + 1)),
+                        PotionOverlayConfig.widgetX + 20,
+                        ((PotionOverlayConfig.widgetY + MainClient.widgetScreen.widgetHeight) - 16) - (2 + (index * 20)),
+                        PotionOverlayConfig.textColor.rgb,
+                        PotionOverlayConfig.renderShadow
+                    )
 
-                drawContext.drawTexture(
-                    img,
-                    PotionOverlayConfig.widgetX + 2,
-                    ((PotionOverlayConfig.widgetY + MainClient.widgetScreen.widgetHeight) - 16) - (2 + (index * 20)),
-                    0f, 0f, 16, 16, 16, 16
-                )
+                    drawContext.drawTexture(
+                        img,
+                        PotionOverlayConfig.widgetX + 2,
+                        ((PotionOverlayConfig.widgetY + MainClient.widgetScreen.widgetHeight) - 16) - (2 + (index * 20)),
+                        0f, 0f, 16, 16, 16, 16
+                    )
+                }
+                else
+                {
+                    drawContext.drawText(
+                        MinecraftClient.getInstance().textRenderer,
+                        text.append(" ").append(getRomanticNumbers(effect.amplifier + 1)),
+                        PotionOverlayConfig.widgetX + 20,
+                        PotionOverlayConfig.widgetY + ((index * 20)),
+                        PotionOverlayConfig.textColor.rgb,
+                        PotionOverlayConfig.renderShadow
+                    )
+
+                    drawContext.drawTexture(
+                        img,
+                        PotionOverlayConfig.widgetX + 2,
+                        PotionOverlayConfig.widgetY + ((index * 20)),
+                        0f, 0f, 16, 16, 16, 16
+                    )
+                }
             }
         }
     }
 
-    private fun renderTimer(drawContext: DrawContext, text: Text, index: Int) {
-        drawContext.drawText(
-            MinecraftClient.getInstance().textRenderer,
-            text,
-            PotionOverlayConfig.widgetX  + 20,
-            ((PotionOverlayConfig.widgetY + MainClient.widgetScreen.widgetHeight) - 16) - (-6 + (index * 20)),
-            0xFFFFFF,
-            PotionOverlayConfig.renderShadow
-        )
+    private fun renderTimer(drawContext: DrawContext, text: Text, index: Int,isBlinking: Boolean) {
+        if(PotionOverlayConfig.widgetY >= (MinecraftClient.getInstance().window.scaledHeight / 2) )
+        {
+            drawContext.drawText(
+                MinecraftClient.getInstance().textRenderer,
+                text,
+                PotionOverlayConfig.widgetX  + 20,
+                ((PotionOverlayConfig.widgetY + MainClient.widgetScreen.widgetHeight) - 16) - (-6 + (index * 20)),
+                if(PotionOverlayConfig.blinkWhenUnderATime && isBlinking) PotionOverlayConfig.blinkColor.rgb else 0xFFFFFF,
+                PotionOverlayConfig.renderShadow
+            )
+        }
+        else
+        {
+            drawContext.drawText(
+                MinecraftClient.getInstance().textRenderer,
+                text,
+                PotionOverlayConfig.widgetX  + 20,
+                PotionOverlayConfig.widgetY + (8 + (index * 20)),
+                if(PotionOverlayConfig.blinkWhenUnderATime && isBlinking) PotionOverlayConfig.blinkColor.rgb else 0xFFFFFF,
+                PotionOverlayConfig.renderShadow
+            )
+        }
+
     }
 
     private fun getRomanticNumbers(number: Int): String {
