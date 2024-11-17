@@ -27,7 +27,7 @@ class CustomHudRenderer {
                         false
                     )
                 } else if (PotionOverlayConfig.blinkWhenUnderATime && (effect.duration <= (20 * PotionOverlayConfig.timeWhenStartBlinking))) {
-                        if ((tickTimer % 100) > 50 ) {
+                        if ((tickTimer % 80) > 40 ) {
                             renderTimer(
                                 drawContext,
                                 Text.of(
