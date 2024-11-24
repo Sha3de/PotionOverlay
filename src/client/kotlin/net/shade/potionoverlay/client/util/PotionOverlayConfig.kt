@@ -36,6 +36,7 @@ class PotionOverlayConfig {
 
         @SerialEntry
         var timeWhenStartBlinking: Int = 10
+
         @SerialEntry
         var blinkColor: Color = Color.WHITE
 
