@@ -15,8 +15,8 @@ class PotionOverlayConfig {
         var HANDLER: ConfigClassHandler<PotionOverlayConfig> = ConfigClassHandler.createBuilder(PotionOverlayConfig::class.java)
             .id(Identifier.of(Main.MOD_ID, "config"))
             .serializer { config: ConfigClassHandler<PotionOverlayConfig>? ->
-                GsonConfigSerializerBuilder.create<PotionOverlayConfig>(config)
-                    .setPath(FabricLoader.getInstance().getConfigDir().resolve("${Main.MOD_ID}.json5"))
+                GsonConfigSerializerBuilder.create(config)
+                    .setPath(FabricLoader.getInstance().configDir.resolve("${Main.MOD_ID}.json5"))
                     .appendGsonBuilder(GsonBuilder::setPrettyPrinting)
                     .setJson5(true)
                     .build()
@@ -36,8 +36,10 @@ class PotionOverlayConfig {
 
         @SerialEntry
         var timeWhenStartBlinking: Int = 10
+
         @SerialEntry
         var blinkColor: Color = Color.WHITE
+
         @SerialEntry
         var textColor: Color = Color.WHITE
 

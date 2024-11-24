@@ -6,6 +6,7 @@ import net.fabricmc.api.Environment
 import net.shade.potionoverlay.client.screens.PotionTimerWidgetScreen
 import net.shade.potionoverlay.client.util.CustomHudRenderer
 import net.shade.potionoverlay.client.util.KeyRegisterHandler
+import net.shade.potionoverlay.client.util.PotionOverlayConfig
 
 @Environment(EnvType.CLIENT)
 class MainClient : ClientModInitializer {
@@ -18,5 +19,6 @@ class MainClient : ClientModInitializer {
     override fun onInitializeClient() {
         keyRegisterHandler.register()
         customHudRenderer.render()
+        PotionOverlayConfig.HANDLER.load()
     }
 }

@@ -22,33 +22,7 @@ class ModMenuIntegration : ModMenuApi {
                 .category(ConfigCategory.createBuilder()
                     .name(Text.of("Widget"))
                     .group(OptionGroup.createBuilder()
-                        .name(Text.of("Position"))
-                        .option(Option.createBuilder<Int>()
-                            .name(Text.of("X cordination"))
-                            .description(OptionDescription.of(Text.of("The X position of the widget")))
-                            .binding(
-                                PotionOverlayConfig.widgetX,
-                                { PotionOverlayConfig.widgetX },
-                                { newVal -> PotionOverlayConfig.widgetX = newVal }
-                            )
-                            .controller { option: Option<Int> ->
-                                IntegerSliderControllerBuilder.create(option).range(0,MinecraftClient.getInstance().window.scaledWidth - MainClient.widgetScreen.widgetWidth).step(1)
-                            }
-                            .build()
-                        )
-                        .option(Option.createBuilder<Int>()
-                            .name(Text.of("Y cordination"))
-                            .description(OptionDescription.of(Text.of("The Y position of the widget")))
-                            .binding(
-                                PotionOverlayConfig.widgetY,
-                                { PotionOverlayConfig.widgetY },
-                                { newVal -> PotionOverlayConfig.widgetY = newVal }
-                            )
-                            .controller { option: Option<Int> ->
-                                IntegerSliderControllerBuilder.create(option).range(0,MinecraftClient.getInstance().window.scaledHeight - MainClient.widgetScreen.widgetHeight).step(1)
-                            }
-                            .build()
-                        )
+                        .name(Text.of("General"))
                         .option(Option.createBuilder<Boolean>()
                             .name(Text.of("Render Shadow"))
                             .description(OptionDescription.of(Text.of("Render the shadow of the text")))
@@ -129,6 +103,7 @@ class ModMenuIntegration : ModMenuApi {
                     )
                     .build()
                 )
+                .save(PotionOverlayConfig.HANDLER::save)
                 .build()
                 .generateScreen(it)
         }
