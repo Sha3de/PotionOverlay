@@ -15,5 +15,4 @@ class Main : ModInitializer {
 
     }
 
-
 }

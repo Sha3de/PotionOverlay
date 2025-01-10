@@ -1,4 +1,5 @@
 {
   "key.potionoverlay.configure_widget": "Configure Potion Timer",
+  "key.potionoverlay.toggleHUD": "Toggle HUD6",
   "category.potionoverlay": "Potion Timer"
 }
