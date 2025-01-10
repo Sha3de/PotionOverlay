@@ -10,12 +10,17 @@ import org.lwjgl.glfw.GLFW
 
 class KeyRegisterHandler {
     private lateinit var openWidgetScreenKey: KeyBinding
-
+    private lateinit var toggleHUDKey: KeyBinding
 
     private fun registerKeys() {
         openWidgetScreenKey = KeyBinding(
             "key.${Main.MOD_ID}.configure_widget",
             GLFW.GLFW_KEY_RIGHT_SHIFT,
+            "category.${Main.MOD_ID}"
+        )
+        toggleHUDKey = KeyBinding(
+            "key.${Main.MOD_ID}.toggleHUD",
+            GLFW.GLFW_KEY_H,
             "category.${Main.MOD_ID}"
         )
     }
@@ -25,6 +30,10 @@ class KeyRegisterHandler {
         ClientTickEvents.END_CLIENT_TICK.register {
             if (openWidgetScreenKey.wasPressed()) {
                 MinecraftClient.getInstance().setScreen(MainClient.widgetScreen)
+            }
+            if(toggleHUDKey.wasPressed())
+            {
+                PotionOverlayConfig.hideHUD = !PotionOverlayConfig.hideHUD
             }
         }
     }

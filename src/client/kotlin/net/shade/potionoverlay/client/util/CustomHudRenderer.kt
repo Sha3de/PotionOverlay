@@ -15,6 +15,10 @@ class CustomHudRenderer {
             tickTimer++
             val player = MinecraftClient.getInstance().player
             player?.statusEffects?.forEachIndexed { index, effect ->
+                //Check if person is in F1 mode
+                if(MinecraftClient.getInstance().options.hudHidden) return@forEachIndexed
+
+                if(PotionOverlayConfig.hideHUD) return@forEachIndexed
 
                 if (effect.effectType.key.isEmpty) return@forEachIndexed
                 val effectTypeKey = effect.effectType.key.get()
