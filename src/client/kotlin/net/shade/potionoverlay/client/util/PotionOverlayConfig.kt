@@ -45,5 +45,8 @@ class PotionOverlayConfig {
 
         @SerialEntry
         var showPotionEffect: Boolean = false
+
+        @SerialEntry
+        var hideHUD: Boolean = false
     }
 }
