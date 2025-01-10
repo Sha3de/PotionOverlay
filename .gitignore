@@ -3,4 +3,6 @@ build
 out
 .kotlin
 .idea
+.gradle
+shell.nix
 
