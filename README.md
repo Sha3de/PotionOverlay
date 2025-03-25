@@ -2,7 +2,7 @@
 ![Enviroment](https://img.shields.io/badge/Enviroment-Client-purple)
 
 ### PotionOverlay
-A Fabric Mod which displays the length of a potion and the type and amplifier
+A Fabric Mod which displays the length, the type and amplifier of a potion
 ## How to use
 ### Keybind
 - `Right Shift` is the default keybind to open the screen where you can drag the potion timer around where you like it
