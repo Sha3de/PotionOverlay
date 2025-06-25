@@ -5,6 +5,7 @@ import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.render.RenderTickCounter
 import net.minecraft.entity.effect.StatusEffectInstance
+import net.minecraft.potion.Potion
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
 import net.shade.potionoverlay.client.MainClient
@@ -34,34 +35,69 @@ class CustomHudRenderer {
                     )
                 } else if (PotionOverlayConfig.blinkWhenUnderATime && (effect.duration <= (20 * PotionOverlayConfig.timeWhenStartBlinking))) {
                         if (ticktimer % 80 > 40) {
-                            renderTimer(
-                                drawContext,
-                                Text.of(
-                                    String.format(
-                                        "%02d:%02d:%02d",
-                                        effect.duration / 20 / 60 / 60,
-                                        effect.duration / 20 / 60 % 60,
-                                        effect.duration / 20 % 60
-                                    )
-                                ),
-                                index,
-                                true
-                            )
+                            if(effect.duration <= 20 * PotionOverlayConfig.timeWhenChangeColor){
+                                renderTimer(
+                                    drawContext,
+                                    Text.of(
+                                        String.format(
+                                            "%02d:%02d:%02d",
+                                            effect.duration / 20 / 60 / 60,
+                                            effect.duration / 20 / 60 % 60,
+                                            effect.duration / 20 % 60
+                                        )
+                                    ),
+                                    index,
+                                    true
+                                )
+                            }
+                            else {
+                                renderTimer(
+                                    drawContext,
+                                    Text.of(
+                                        String.format(
+                                            "%02d:%02d:%02d",
+                                            effect.duration / 20 / 60 / 60,
+                                            effect.duration / 20 / 60 % 60,
+                                            effect.duration / 20 % 60
+                                        )
+                                    ),
+                                    index,
+                                    false
+                                )
+                            }
+
                     }
                 } else {
-                    renderTimer(
-                        drawContext,
-                        Text.of(
-                            String.format(
-                                "%02d:%02d:%02d",
-                                effect.duration / 20 / 60 / 60,
-                                effect.duration / 20 / 60 % 60,
-                                effect.duration / 20 % 60
-                            )
-                        ),
-                        index,
-                        false
-                    )
+                    if(effect.duration <= 20 * PotionOverlayConfig.timeWhenChangeColor){
+                        renderTimer(
+                            drawContext,
+                            Text.of(
+                                String.format(
+                                    "%02d:%02d:%02d",
+                                    effect.duration / 20 / 60 / 60,
+                                    effect.duration / 20 / 60 % 60,
+                                    effect.duration / 20 % 60
+                                )
+                            ),
+                            index,
+                            true
+                        )
+                    }
+                    else {
+                        renderTimer(
+                            drawContext,
+                            Text.of(
+                                String.format(
+                                    "%02d:%02d:%02d",
+                                    effect.duration / 20 / 60 / 60,
+                                    effect.duration / 20 / 60 % 60,
+                                    effect.duration / 20 % 60
+                                )
+                            ),
+                            index,
+                            false
+                        )
+                    }
                 }
                 if(PotionOverlayConfig.widgetY >= (MinecraftClient.getInstance().window.scaledHeight / 2) ) {
                     drawContext.drawText(
@@ -102,7 +138,17 @@ class CustomHudRenderer {
         }
     }
 
-    private fun renderTimer(drawContext: DrawContext, text: Text, index: Int,isBlinking: Boolean) {
+    private fun renderTimer(drawContext: DrawContext, text: Text, index: Int, changeColor: Boolean) {
+        var color: Int;
+        if(PotionOverlayConfig.changeColor && changeColor)
+        {
+            color = PotionOverlayConfig.timerColor.rgb
+        }
+        else {
+            color = 0xFFFFFF;
+        }
+
+
         if(PotionOverlayConfig.widgetY >= (MinecraftClient.getInstance().window.scaledHeight / 2) )
         {
             drawContext.drawText(
@@ -110,7 +156,7 @@ class CustomHudRenderer {
                 text,
                 PotionOverlayConfig.widgetX  + 20,
                 ((PotionOverlayConfig.widgetY + MainClient.widgetScreen.widgetHeight) - 16) - (-6 + (index * 20)),
-                if(PotionOverlayConfig.blinkWhenUnderATime && isBlinking) PotionOverlayConfig.blinkColor.rgb else 0xFFFFFF,
+                color,
                 PotionOverlayConfig.renderShadow
             )
         }
@@ -121,7 +167,7 @@ class CustomHudRenderer {
                 text,
                 PotionOverlayConfig.widgetX  + 20,
                 PotionOverlayConfig.widgetY + (8 + (index * 20)),
-                if(PotionOverlayConfig.blinkWhenUnderATime && isBlinking) PotionOverlayConfig.blinkColor.rgb else 0xFFFFFF,
+                color ,
                 PotionOverlayConfig.renderShadow
             )
         }
