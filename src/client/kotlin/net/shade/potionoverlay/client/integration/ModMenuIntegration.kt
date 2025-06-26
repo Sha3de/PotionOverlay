@@ -14,96 +14,144 @@ import java.awt.Color
 class ModMenuIntegration : ModMenuApi {
 
     override fun getModConfigScreenFactory(): ConfigScreenFactory<*> {
-        return ConfigScreenFactory {
+        return ConfigScreenFactory { parent ->
             YetAnotherConfigLib.createBuilder()
-                .title(Text.of("Potion Overlay Config"))
-                .category(ConfigCategory.createBuilder()
-                    .name(Text.of("Widget"))
-                    .group(OptionGroup.createBuilder()
-                        .name(Text.of("General"))
-                        .option(Option.createBuilder<Boolean>()
-                            .name(Text.of("Render Shadow"))
-                            .description(OptionDescription.of(Text.of("Render the shadow of the text")))
-                            .binding(
-                                PotionOverlayConfig.renderShadow,
-                                { PotionOverlayConfig.renderShadow },
-                                { newVal -> PotionOverlayConfig.renderShadow = newVal }
-                            )
-                            .controller { option: Option<Boolean> ->
-                                BooleanControllerBuilder.create(option).yesNoFormatter()
-                            }
-                            .build()
+                .title(Text.of("Potion Overlay Settings"))
+                .category(
+                    ConfigCategory.createBuilder()
+                        .name(Text.of("Display Settings"))
+                        .group(
+                            OptionGroup.createBuilder()
+                                .name(Text.of("Appearance"))
+                                .option(
+                                    Option.createBuilder<Boolean>()
+                                        .name(Text.of("Text Shadow"))
+                                        .description(OptionDescription.of(Text.of("Whether to render text with a shadow")))
+                                        .binding(
+                                            PotionOverlayConfig.renderShadow,
+                                            { PotionOverlayConfig.renderShadow },
+                                            { newVal -> PotionOverlayConfig.renderShadow = newVal }
+                                        )
+                                        .controller { option: Option<Boolean> ->
+                                            BooleanControllerBuilder.create(option).yesNoFormatter()
+                                        }
+                                        .build()
+                                )
+                                .option(
+                                    Option.createBuilder<Color>()
+                                        .name(Text.of("Text Color"))
+                                        .description(OptionDescription.of(Text.of("The color of the potion timer text")))
+                                        .binding(
+                                            PotionOverlayConfig.textColor,
+                                            { PotionOverlayConfig.textColor },
+                                            { newVal -> PotionOverlayConfig.textColor = newVal }
+                                        )
+                                        .controller(ColorControllerBuilder::create)
+                                        .build()
+                                )
+                                .build()
                         )
-                        .option(Option.createBuilder<Color>()
-                            .name(Text.of("Color of the text"))
-                            .description(OptionDescription.of(Text.of("Change the color of the text")))
-                            .binding(
-                                PotionOverlayConfig.textColor,
-                                { PotionOverlayConfig.textColor },
-                                { newVal -> PotionOverlayConfig.textColor = newVal }
-                            )
-                            .controller(ColorControllerBuilder::create)
-                            .build()
+                        .group(
+                            OptionGroup.createBuilder()
+                                .name(Text.of("Timer Effects"))
+                                .option(
+                                    Option.createBuilder<Boolean>()
+                                        .name(Text.of("Enable Blinking"))
+                                        .description(OptionDescription.of(Text.of("Timer blinks when expiration is near")))
+                                        .binding(
+                                            PotionOverlayConfig.blinkWhenUnderATime,
+                                            { PotionOverlayConfig.blinkWhenUnderATime },
+                                            { newVal -> PotionOverlayConfig.blinkWhenUnderATime = newVal }
+                                        )
+                                        .controller { option: Option<Boolean> ->
+                                            BooleanControllerBuilder.create(option).yesNoFormatter()
+                                        }
+                                        .build()
+                                )
+                                .option(
+                                    Option.createBuilder<Int>()
+                                        .name(Text.of("Blink Threshold"))
+                                        .description(OptionDescription.of(Text.of("Seconds remaining when blinking starts")))
+                                        .binding(
+                                            PotionOverlayConfig.timeWhenStartBlinking,
+                                            { PotionOverlayConfig.timeWhenStartBlinking },
+                                            { newVal -> PotionOverlayConfig.timeWhenStartBlinking = newVal }
+                                        )
+                                        .controller { option: Option<Int> ->
+                                            IntegerSliderControllerBuilder.create(option)
+                                                .range(1, 60)
+                                                .step(1)
+                                        }
+                                        .build()
+                                )
+                                .option(
+                                    Option.createBuilder<Boolean>()
+                                        .name(Text.of("Color Warning"))
+                                        .description(OptionDescription.of(Text.of("Change timer color when expiration is near")))
+                                        .binding(
+                                            PotionOverlayConfig.changeColor,
+                                            { PotionOverlayConfig.changeColor },
+                                            { newVal -> PotionOverlayConfig.changeColor = newVal }
+                                        )
+                                        .controller { option: Option<Boolean> ->
+                                            BooleanControllerBuilder.create(option).yesNoFormatter()
+                                        }
+                                        .build()
+                                )
+                                .option(
+                                    Option.createBuilder<Color>()
+                                        .name(Text.of("Warning Color"))
+                                        .description(OptionDescription.of(Text.of("Color when timer is near expiration")))
+                                        .binding(
+                                            PotionOverlayConfig.timerColor,
+                                            { PotionOverlayConfig.timerColor },
+                                            { newVal -> PotionOverlayConfig.timerColor = newVal }
+                                        )
+                                        .controller(ColorControllerBuilder::create)
+                                        .build()
+                                )
+                                .option(
+                                    Option.createBuilder<Int>()
+                                        .name(Text.of("Color Change Threshold"))
+                                        .description(OptionDescription.of(Text.of("Seconds remaining when color changes")))
+                                        .binding(
+                                            PotionOverlayConfig.timeWhenChangeColor,
+                                            { PotionOverlayConfig.timeWhenChangeColor },
+                                            { newVal -> PotionOverlayConfig.timeWhenChangeColor = newVal }
+                                        )
+                                        .controller { option: Option<Int> ->
+                                            IntegerSliderControllerBuilder.create(option)
+                                                .range(1, 60)
+                                                .step(1)
+                                        }
+                                        .build()
+                                )
+                                .build()
                         )
-                        .option(Option.createBuilder<Boolean>()
-                            .name(Text.of("Render Blinking effect"))
-                            .description(OptionDescription.of(Text.of("If the text should blink when under a certain time")))
-                            .binding(
-                                PotionOverlayConfig.blinkWhenUnderATime,
-                                { PotionOverlayConfig.blinkWhenUnderATime },
-                                { newVal -> PotionOverlayConfig.blinkWhenUnderATime = newVal }
-                            )
-                            .controller { option: Option<Boolean> ->
-                                BooleanControllerBuilder.create(option).yesNoFormatter()
-                            }
-                            .build()
-                        )
-                        .option(Option.createBuilder<Int>()
-                            .name(Text.of("How many seconds left to start blinking"))
-                            .description(OptionDescription.of(Text.of("On how many seconds left should the text start blinking")))
-                            .binding(
-                                0,
-                                { PotionOverlayConfig.timeWhenStartBlinking },
-                                { newVal -> PotionOverlayConfig.timeWhenStartBlinking = newVal }
-                            )
-                            .controller { option: Option<Int> ->
-                                IntegerSliderControllerBuilder.create(option).range(1,200).step(1)
-                            }
-                            .available(PotionOverlayConfig.blinkWhenUnderATime)
-                            .build()
-                        )
-                        .option(Option.createBuilder<Color>()
-                            .name(Text.of("Color of the blinking time"))
-                            .description(OptionDescription.of(Text.of("Which color the timer should be when blinking")))
-                            .binding(
-                                PotionOverlayConfig.blinkColor,
-                                { PotionOverlayConfig.blinkColor },
-                                { newVal -> PotionOverlayConfig.blinkColor = newVal }
-                            )
-                            .controller(ColorControllerBuilder::create)
-                            .available(PotionOverlayConfig.blinkWhenUnderATime)
-                            .build()
-                        )
-                        .option(Option.createBuilder<Boolean>()
-                            .name(Text.of("Show the potion effect"))
-                            .description(OptionDescription.of(Text.of("Show the potion effect that is displayed in the top right corner")))
-                            .binding(
-                                PotionOverlayConfig.showPotionEffect,
-                                { PotionOverlayConfig.showPotionEffect },
-                                { newVal -> PotionOverlayConfig.showPotionEffect = newVal }
-                            )
-                            .controller { option: Option<Boolean> ->
-                                BooleanControllerBuilder.create(option).yesNoFormatter()
-                            }
-                            .build()
+                        .group(
+                            OptionGroup.createBuilder()
+                                .name(Text.of("Visibility"))
+                                .option(
+                                    Option.createBuilder<Boolean>()
+                                        .name(Text.of("Show Effects"))
+                                        .description(OptionDescription.of(Text.of("Display active potion effects")))
+                                        .binding(
+                                            PotionOverlayConfig.showPotionEffect,
+                                            { PotionOverlayConfig.showPotionEffect },
+                                            { newVal -> PotionOverlayConfig.showPotionEffect = newVal }
+                                        )
+                                        .controller { option: Option<Boolean> ->
+                                            BooleanControllerBuilder.create(option).yesNoFormatter()
+                                        }
+                                        .build()
+                                )
+                                .build()
                         )
                         .build()
-                    )
-                    .build()
                 )
-                .save(PotionOverlayConfig.HANDLER::save)
+                .save { PotionOverlayConfig.HANDLER.save() }
                 .build()
-                .generateScreen(it)
+                .generateScreen(parent)
         }
     }
 }

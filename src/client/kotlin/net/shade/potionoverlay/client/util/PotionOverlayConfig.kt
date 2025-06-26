@@ -41,12 +41,18 @@ class PotionOverlayConfig {
         var textColor: Color = Color.WHITE
 
         @SerialEntry
-        var blinkColor: Color = Color.WHITE
+        var timerColor: Color = Color.WHITE
 
         @SerialEntry
         var showPotionEffect: Boolean = false
 
         @SerialEntry
         var hideHUD: Boolean = false
+
+        @SerialEntry
+        var changeColor: Boolean = false
+
+        @SerialEntry
+        var timeWhenChangeColor: Int = 10
     }
 }
