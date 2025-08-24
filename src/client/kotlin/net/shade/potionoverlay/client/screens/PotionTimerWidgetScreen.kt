@@ -3,14 +3,15 @@ package net.shade.potionoverlay.client.screens
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.minecraft.client.MinecraftClient
+import net.minecraft.client.gl.RenderPipelines
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.Screen
-import net.minecraft.client.render.RenderLayer
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
 import net.shade.potionoverlay.Main
 import net.shade.potionoverlay.client.util.PotionOverlayConfig
 import org.lwjgl.glfw.GLFW
+import java.awt.Color
 
 @Environment(EnvType.CLIENT)
 class PotionTimerWidgetScreen : Screen(Text.of("Potion Timer Widget")) {
@@ -25,17 +26,20 @@ class PotionTimerWidgetScreen : Screen(Text.of("Potion Timer Widget")) {
     init {
         loadWidgetPosition()
     }
-
     override fun render(context: DrawContext?, mouseX: Int, mouseY: Int, delta: Float) {
+        super.render(context, mouseX, mouseY, delta)
+
+        val client = MinecraftClient.getInstance()
+        val renderer = client.textRenderer ?: return
+
         if ((PotionOverlayConfig.widgetX - (widgetWidth * 1.5)) > MinecraftClient.getInstance().window.scaledWidth) PotionOverlayConfig.widgetX =
             MinecraftClient.getInstance().window.scaledWidth - widgetWidth
         if ((PotionOverlayConfig.widgetY - (widgetHeight * 1.5)) > MinecraftClient.getInstance().window.scaledHeight) PotionOverlayConfig.widgetY =
             MinecraftClient.getInstance().window.scaledHeight - widgetHeight
-        super.render(context, mouseX, mouseY, delta)
+
         val img1 = Identifier.ofVanilla("textures/mob_effect/absorption.png")
         val img2 = Identifier.ofVanilla("textures/mob_effect/blindness.png")
         val resetButton = Identifier.of(Main.MOD_ID, "textures/gui/reset_button.png")
-
         if (context == null) return
         context.fill(
             PotionOverlayConfig.widgetX,
@@ -45,23 +49,23 @@ class PotionTimerWidgetScreen : Screen(Text.of("Potion Timer Widget")) {
             0x80000000.toInt()
         )
         context.drawText(
-            MinecraftClient.getInstance().textRenderer,
+            renderer,
             Text.of("Absorption II"),
             PotionOverlayConfig.widgetX + 20,
             PotionOverlayConfig.widgetY + 2,
-            0xFFFFFF,
+            Color.WHITE.rgb,
             false
         )
         context.drawText(
-            MinecraftClient.getInstance().textRenderer,
+            renderer,
             Text.of("Blindness IV"),
             PotionOverlayConfig.widgetX + 20,
             PotionOverlayConfig.widgetY + 22,
-            0xFFFFFF,
+            Color.WHITE.rgb,
             false
         )
         context.drawTexture(
-            { t: Identifier ->  RenderLayer.getGuiTexturedOverlay(t)},
+            RenderPipelines.GUI_TEXTURED,
             img1,
             PotionOverlayConfig.widgetX + 2,
             PotionOverlayConfig.widgetY + 2,
@@ -73,7 +77,7 @@ class PotionTimerWidgetScreen : Screen(Text.of("Potion Timer Widget")) {
             16
         )
         context.drawTexture(
-            { t: Identifier ->  RenderLayer.getGuiTexturedOverlay(t)},
+            RenderPipelines.GUI_TEXTURED,
             img2,
             PotionOverlayConfig.widgetX + 2,
             PotionOverlayConfig.widgetY + 22,
@@ -85,7 +89,7 @@ class PotionTimerWidgetScreen : Screen(Text.of("Potion Timer Widget")) {
             16
         )
         context.drawTexture(
-            { t: Identifier ->  RenderLayer.getGuiTexturedOverlay(t)},
+            RenderPipelines.GUI_TEXTURED,
             resetButton,
             MinecraftClient.getInstance().window.scaledWidth - 20,
             4,
@@ -142,15 +146,11 @@ class PotionTimerWidgetScreen : Screen(Text.of("Potion Timer Widget")) {
     }
 
     private fun saveWidgetPosition() {
-        PotionOverlayConfig.widgetX = PotionOverlayConfig.widgetX
-        PotionOverlayConfig.widgetY = PotionOverlayConfig.widgetY
         PotionOverlayConfig.HANDLER.save()
     }
 
     private fun loadWidgetPosition() {
         PotionOverlayConfig.HANDLER.load()
-        PotionOverlayConfig.widgetX = PotionOverlayConfig.widgetX
-        PotionOverlayConfig.widgetY = PotionOverlayConfig.widgetY
     }
 
     override fun close() {

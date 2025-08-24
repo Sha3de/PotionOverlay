@@ -9,7 +9,9 @@ import net.shade.potionoverlay.client.util.KeyRegisterHandler
 import net.shade.potionoverlay.client.util.PotionOverlayConfig
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents.ClientStopping
+import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry
 import net.minecraft.client.MinecraftClient
+import net.minecraft.util.Identifier
 
 @Environment(EnvType.CLIENT)
 class MainClient : ClientModInitializer {
@@ -20,7 +22,7 @@ class MainClient : ClientModInitializer {
     }
     override fun onInitializeClient() {
         keyRegisterHandler.register()
-        customHudRenderer.render()
+        HudElementRegistry.addLast(Identifier.of("potionoverlay"), CustomHudRenderer())
         PotionOverlayConfig.HANDLER.load()
         ClientLifecycleEvents.CLIENT_STOPPING.register(ClientStopping { client: MinecraftClient? ->
             PotionOverlayConfig.HANDLER.save()

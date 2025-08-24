@@ -4,7 +4,7 @@ import java.util.*
 
 plugins {
     kotlin("jvm") version "2.0.21"
-    id("fabric-loom") version "1.8.+"
+    id("fabric-loom") version "1.10.+"
     id("maven-publish")
 }
 val versionSuffix: String = project.findProperty("version") as String? ?: "1.21.1"
