@@ -25,7 +25,7 @@ class ModMenuIntegration : ModMenuApi {
                                 .option(
                                     Option.createBuilder<Boolean>()
                                         .name(Text.of("Text Shadow"))
-                                        .description(OptionDescription.of(Text.of("Whether to render text with a shadow")))
+                                        .description(OptionDescription.of(Text.of("Should text be rendered with a shadow?")))
                                         .binding(
                                             PotionOverlayConfig.renderShadow,
                                             { PotionOverlayConfig.renderShadow },
@@ -46,6 +46,20 @@ class ModMenuIntegration : ModMenuApi {
                                             { newVal -> PotionOverlayConfig.textColor = newVal }
                                         )
                                         .controller(ColorControllerBuilder::create)
+                                        .build()
+                                )
+                                .option(
+                                    Option.createBuilder<Boolean>()
+                                        .name(Text.of("Automatically Change Icon and Text Position"))
+                                        .description(OptionDescription.of(Text.of("Should the icon and the text change position automatically?")))
+                                        .binding(
+                                            PotionOverlayConfig.changeIconAndTextPosition,
+                                            { PotionOverlayConfig.changeIconAndTextPosition },
+                                            { newVal -> PotionOverlayConfig.changeIconAndTextPosition = newVal }
+                                        )
+                                        .controller { option: Option<Boolean> ->
+                                            BooleanControllerBuilder.create(option).yesNoFormatter()
+                                        }
                                         .build()
                                 )
                                 .build()
@@ -70,7 +84,7 @@ class ModMenuIntegration : ModMenuApi {
                                 .option(
                                     Option.createBuilder<Int>()
                                         .name(Text.of("Blink Threshold"))
-                                        .description(OptionDescription.of(Text.of("Seconds remaining when blinking starts")))
+                                        .description(OptionDescription.of(Text.of("Time remaining (in seconds) when blinking begins")))
                                         .binding(
                                             PotionOverlayConfig.timeWhenStartBlinking,
                                             { PotionOverlayConfig.timeWhenStartBlinking },
@@ -111,8 +125,8 @@ class ModMenuIntegration : ModMenuApi {
                                 )
                                 .option(
                                     Option.createBuilder<Int>()
-                                        .name(Text.of("Color Change Threshold"))
-                                        .description(OptionDescription.of(Text.of("Seconds remaining when color changes")))
+                                        .name(Text.of("Warning Color Threshold"))
+                                        .description(OptionDescription.of(Text.of("Time remaining (in seconds) when the color changes")))
                                         .binding(
                                             PotionOverlayConfig.timeWhenChangeColor,
                                             { PotionOverlayConfig.timeWhenChangeColor },

@@ -11,6 +11,7 @@ import org.lwjgl.glfw.GLFW
 class KeyRegisterHandler {
     private lateinit var openWidgetScreenKey: KeyBinding
     private lateinit var toggleHUDKey: KeyBinding
+    private var isOpen: Boolean = false
 
 
     private fun registerKeys() {
@@ -43,5 +44,6 @@ class KeyRegisterHandler {
         registerKeys()
         handleKeys()
         KeyBindingHelper.registerKeyBinding(openWidgetScreenKey)
+        KeyBindingHelper.registerKeyBinding(toggleHUDKey)
     }
 }
