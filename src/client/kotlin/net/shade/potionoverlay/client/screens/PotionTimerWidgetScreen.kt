@@ -19,7 +19,7 @@ class PotionTimerWidgetScreen : Screen(Text.of("Potion Timer Widget")) {
     private var dragOffsetX = 0
     private var dragOffsetY = 0
 
-    private val widgetWidth = 120
+    val widgetWidth = 120
 
     val widgetHeight = 40
 

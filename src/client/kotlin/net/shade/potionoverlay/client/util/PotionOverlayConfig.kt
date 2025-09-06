@@ -54,5 +54,8 @@ class PotionOverlayConfig {
 
         @SerialEntry
         var timeWhenChangeColor: Int = 10
+
+        @SerialEntry
+        var changeIconAndTextPosition: Boolean = true
     }
 }
