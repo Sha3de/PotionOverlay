@@ -43,5 +43,6 @@ class KeyRegisterHandler {
         registerKeys()
         handleKeys()
         KeyBindingHelper.registerKeyBinding(openWidgetScreenKey)
+        KeyBindingHelper.registerKeyBinding(toggleHUDKey)
     }
 }
